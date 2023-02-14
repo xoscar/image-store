@@ -37,6 +37,8 @@ Based on the project description the base requirements specify to use the follow
 The Next.js (FE) application should take care of displaying the images to the user, as well as providing an interface to upload the assets.
 In this case, the idea is for this application to be lightweight and simple to deploy, in this case we'll be dockerizing next.js so it can be uploaded to ECR and later on deployed to Elastic Beanstalk.
 
+For more detailed information around the Frontend Architecture lead to the [following subfolder](frontend/README.md).
+
 ### User Experience
 
 Following the practices from modern social media applications, ideally the user should be able to keep interacting with the interface while the assets are being uploaded.
