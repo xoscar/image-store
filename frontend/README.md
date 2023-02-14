@@ -232,6 +232,7 @@ The Storybook library is another great tool that can be used to create generic c
 - [Components](entities/Components.md)
 - [Models](entities/Models.md)
 - [Services](entities/Services.md)
+- [Providers](entities/Providers.md)
 - [Gateways](entities/Gateways.md)
 - [Pages](entities/Pages.md)
 - [Types](entities/Types.md)
