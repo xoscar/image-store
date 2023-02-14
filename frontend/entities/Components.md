@@ -1,6 +1,6 @@
 # Components
 
-A components should contain the bare minimum to render an UI section, in this case, I believe components should be treated as `Pure Functions`, which provides a simple standard to follow and makes them more reusable across the application.
+A component should contain the bare minimum to render a UI section, in this case, I believe components should be treated as `Pure Functions`, which provides a simple standard to follow and makes them more reusable across the application.
 
 ## How to
 

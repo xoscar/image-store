@@ -7,15 +7,15 @@ Services are static modules that provide a list of pure functions that can be us
 ## How to
 
 ```ts
-// user service
+// image service
 
-const UserService = () => ({
-  getUserDaysToBirthday(user: User): number {
+const ImageService = () => ({
+  getImageMimetype(image: Image): number {
     // ...logic
 
     return 0;
   },
 });
 
-export default UserService;
+export default ImageService;
 ```

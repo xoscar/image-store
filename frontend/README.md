@@ -16,20 +16,42 @@ The first thing to consider will be the starting point of the application. In th
 
 ### Why Typescript?
 
-Typescript has become a no-brainer in the Javascript word because of its easy of use, flexibility and extensive toolkit for type safety approaches. Using Vanillay JS can be often difficult when it comes to having an easy way to understand how different parts of the system interact with each other, if you have I/O operations using type checks you can understand the expected information that is going to flow through, and not just guess based on a few tries.
+Typescript has become a no-brainer in the Javascript word because of its ease of use, flexibility and extensive toolkit for type safety approaches. Using Vanilla JS can often be difficult when it comes to having an easy way to understand how different parts of the system interact with each other, if you have I/O operations using type checks you can understand the expected information that is going to flow through, and not just guess based on a few tries.
 
-Another keypoint for React is that in case you want to support something similar like PropTypes, you might end up adding extra overhead to components and not only that but PropTypes are only targeted for React Components and will leave the rest of the app with any possible type check.
+Another keypoint for React is that in case you want to support something similar like PropTypes, you might end up adding extra overhead to components and not only that but PropTypes are only targeted for React Components and will leave the rest of the app without any possible type check.
 
 #### Downsides
 
-Can cause some initial overhead issues to structure the required types and having the team used to using the tool.
+- Can cause some initial overhead issues to structure the required types and having the team used to using the tool.
+
+### Transitioning to Typescript
+
+When it comes to moving away from Vanilla JS, the path might be different from team to team. Some of the factors need to be considered before making the switch are:
+
+1. **Size of the code base.** Depending on the code base, sometimes adding type checks can make the project to run very slowly even for high end computers, so in this case the tradeoff needs to be take in consideration.
+2. **Business Requirements.** Event thought Typescript can be introduced in small pieces and its compatible with JS modules, the initial introduction could slow down the development cycles.
+3. **Defined Standards.** As any other tool, Typescript is as good as how the people use it, having an initial plan on how and what to use from the typing framework before start introducing it can go a long way.
+
+Currently there are multiple libraries that can help developers autogenerate types based on defined structures like GraphQL, Swagger or OpenAPI.
+A good starting point could be defining the structures that are expected to be used for external services.
+
+The Official Typescript docs include a tutorial on how to start switching from [Vanilla JS](https://www.typescriptlang.org/docs/handbook/migrating-from-javascript.html).
+
+### Team Ramp-up
+
+As Typescript came up as an effort from the Microsoft team to have an standard type system for Javascript, it is not a surprise that it shares a lot of similarities to other Microsoft Languages like C# or even Java.
+
+For developers that have at least some basic understanding of any typed language, Typescript will result familiar and even sometimes a simpler alternative from other typed languages.
+For developers that have zero experience with typed languages it can become a little more challenging as just by introducing the concept of types needs to be figured out before using an actual Framework.
+
+Ideally, the team should include a Senior developer that would set the standards, pacing and teach the junior developers to use the framework in a capacity where they can contribute to the project.
 
 ### Folder Structure
 
-React is a really powerful library that allows you to build great Frontend applications, the problem is that it doesn't provide an strict standard on how to structure the application directories, in this case leaving the developers decide what's best for their use case.
+React is a really powerful library that allows you to build great Frontend applications, the problem is that it doesn't provide a strict standard on how to structure the application directories, in this case leaving the developers to decide what's best for their use case.
 
-In this case, the most common and well known pattern is the container-component one, which defines a standard on how to distribute the code across the project.
-For Next.js it includes already a predefined structure that allows you to follow this pattern from the beginning, you can define `pages` as top level components(containers) and the rest of the three can be part of the `components` folder.
+The most common and well known pattern is container-component, which defines a standard on how to distribute the code across the project.
+Next.js already includes a predefined structure that allows you to follow this pattern from the beginning, you can define `pages` as top level components (containers) and the rest can be part of the `components` folder.
 
 Directories diagram
 
@@ -55,34 +77,41 @@ Directories diagram
 
 ### Naming Conventions
 
-A big part of having a good development experience while working on an application is to been able to identify files quickly, understanding what each file means and having an simple way to add more to the project.
-
+A big part of having a good development experience while working on an application is to be able to identify files quickly, understanding what each file means and having a simple way to add more to the project.
 In this case, I believe that having the entity type attached clearly to the filename can be really helpful, the following table shows how each filename should be constructed based on the type.
 
 | Type      | FileName                                   |
 | --------- | ------------------------------------------ |
 | Component | Image.tsx                                  |
-| Provider  | NameOrThe.provider.tsx, Image.provider.tsx |
+| provider  | NameOfThe.provider.tsx, Image.provider.tsx |
 | Types     | NameOfThe.type.ts, Images.types.ts         |
 | Gateways  | NameOfThe.gateway.ts, Images.gateway.ts    |
 | Models    | NameOfThe.model.ts, Image.model.ts         |
 | Constants | NameOfThe.constants.ts, Image.constants.ts |
-| Hooks     | useImage.ts(x)                             |
+| hooks     | useImage.ts(x)                             |
 | Utils     | Common.utils.ts                            |
 | Services  | NameOfThe.service.ts(x), Image.service.ts  |
 | Styles    | Image.styled.ts, Modal.styles.ts           |
 
+### Why styled and not styles
+
+As we are using styled-components as a main framework, it is good to identify that the files contain `styled` components instead of just `css` rules.
+
+### When to use TS vs TSX
+
+The `.tsx` extension should be used when the file includes any `JSX` fragments in it, as using the regular `.ts` extension would break the build during transpilation.
+
 #### Downsides
 
 - Names can become quite long
-- For some types you have to break the naming convention to follow the framework standards (next.js pages/ react hooks)
+- For some types you have to break the naming convention to follow the framework standards (next.js pages, react hooks)
 
 ### Exporting/Importing a module
 
-When it comes to exporting a module, that could be from a React Component, Provider, Gateways, etc. We want to focus on two main points:
+When exporting a module from a React Component, provider, Gateways, etc., we want to focus on two main points:
 
 1. Avoid having to import a module from a far parent folder, similar to `../../../../../folder/Component/Component.tsx`. This can be easily fixed by configuring `Typescript` to use the root folder as an absolute path, updating the import to `folder/Component/Component.tsx`.
-2. Having a clear entry point for the imported/exported module. To fix this, we will be using indexes files as a main entry point, each module that consist in multiple files like:
+2. Having a clear entry point for the imported/exported module. To fix this, we will be using index files as a main entry point, each module consists in multiple files like:
 
 ```
 /Component
@@ -98,7 +127,7 @@ Should include an `index.ts` file that exports the main entry point similar to:
 export {default} from './Component';
 ```
 
-Allowing external modules importing it directly from the parent folder `import folder/Component`.
+This allows external modules to import it directly from the parent folder `import folder/Component`.
 
 #### Downsides
 
@@ -107,7 +136,7 @@ Allowing external modules importing it directly from the parent folder `import f
 ## State Management
 
 There is a big debacle in the React community about the usage of different state management tools, the biggest issue is when and why you should consider using one.
-And I believe the topic hot even more complex after the addition of Providers and hooks.
+I believe the hot topic is even more complex after the addition of providers and hooks.
 
 Let's consider some of the options:
 
@@ -118,13 +147,13 @@ The latest versions of React provide you with tools that you can use for simple 
 **Pros:**
 
 - You can keep your app lightweight, as you avoid adding extra libraries to the build.
-- Reducers are nativaly supported by React and can be used for scoped portions of the app or globally depending on the use case.
+- Reducers are natively supported by React and can be used for scoped portions of the app or globally depending on the use case.
 - Providers, context and hooks are great tools to spread the data across the component tree.
 
 **Cons:**
 
 - React still is a UI library, which doesn't include anything for I/O operations.
-- Everything is added at the lifecycle level, so functions, so handling caching across the data, functions and other data types needs to be manually handled by the developers.
+- Everything is added at the lifecycle level, so handling caching across the data, functions and other data types needs to be manually handled by the developers.
 - As great as hooks can be, it can become cumbersome to have all of your business logic encapsulated in a concept that is framework specific.
 
 ### Redux-Toolkit
@@ -132,25 +161,25 @@ The latest versions of React provide you with tools that you can use for simple 
 This is a great tool that works as a wrapper for the Redux library, it includes simpler APIs to enable fast development while still using Redux.
 **Pros:**
 
-- Includes simple ways for I/O implementations, and auto generates hooks for you to use, it also includes caching, error handling and more.
-- You can keep using the same patterns as for Redux with Actions, Reducers if you want to keep having fine control of the state.
+- Includes simple ways to do I/O implementations, auto generates hooks for you to use, and also includes caching, error handling and more.
+- You can keep using the same patterns as you did for Redux with Actions and Reducers if you want to keep having fine control of the state.
 - Fully typed, so you can use it alongside `Typescript`.
 - Side effects come out of the box by allowing cross action listeners for reducers.
 
 **Cons:**
 
-- It comes with an initial overhead of learning how Redux works, as it feels targeted for old users that want a new way of interacting with he same pattern.
-- Includes several tools and APIs that you wont need unless you have a specific use case, it might be considered overkill for some apps.
-- It includes its own custom way when creating I/O operations, in case you have generic logic you want to reuse you'll have to migrate them.
+- It comes with an initial overhead of learning how Redux works, as it feels targeted for users already familiar with the pattern but want an easier way of interacting with the tool.
+- Includes several tools and APIs that you wont need unless you have a specific use case, might be overkill for some apps.
+- It includes its own custom way when creating I/O operations, if you have generic logic you want to reuse you'll have to migrate it.
 
 ### React-Query
 
-React query is an I/O abstraction that allows you create custom logic to connect to an API while also provides its own state management.
+React query is an I/O abstraction that allows you create custom logic to connect to an API while also providing its own state management.
 
 **Pros:**
 
 - Allows you to decouple the actual API call from the React code, having your generic gateways doing the job.
-- Native support for queries, mutations, paginated queries and more.
+- Native support for queries, mutations, paginated queries, caching, on focus window refresh, you can read the full list in [the documentation](https://react-query-v3.tanstack.com/overview).
 - Includes a tagging system for cache, so you can decide when to refetch certain queries.
 
 **Cons:**
@@ -192,7 +221,7 @@ To ensure component reusability and avoid recreating the same components over an
 
 ### Style-Components
 
-The styled-component library becomes very handy when it comes to create extendible components based on a specific set of styles, it contains a `ThemeProvider` tha can be used to store the overall styling rules, like spacing, colors, fonts, etc.
+The styled-components library becomes very handy when it comes to create extendible components based on a specific set of styles, it contains a `Themeprovider` tha can be used to store the overall styling rules, like spacing, colors, fonts, etc.
 
 ### Storybook
 
@@ -209,6 +238,7 @@ The Storybook library is another great tool that can be used to create generic c
 
 ## Rendering the Home Page
 
+```txt
 Acceptance Criteria:
 
 AC1:
@@ -259,6 +289,7 @@ As a user looking at the main page
 And I just uploaded an image
 And I try to navigate away
 I should see an alert to confirm the navigation action
+```
 
 ### Component Tree
 
@@ -267,7 +298,7 @@ Pseudo code of the main page component tree:
 ```jsx
 <Layout>
   <Navigation>
-  <ImageProvider>
+  <Imageprovider>
     <Page>
       <Main>
         <UploadInProgress>
@@ -296,51 +327,51 @@ sequenceDiagram
     User->>+Main Page: Loads Page
     par Main Page to User
         Main Page-->>-User: Displays Skeleton List
-    and Main Page to Image Provider
+    and Main Page to Image provider
         User->>+Main Page: Loads Page
-        Main Page->>+Image Provider: Instantiates Provider
-        Image Provider->>+Image Gateway: Fetch images from API (paginated)
+        Main Page->>+Image provider: Instantiates provider
+        Image provider->>+Image Gateway: Fetch images from API (paginated)
         Image Gateway->>+Models: Generate image models
         Models-->>-Image Gateway: Return Image Models
-        Image Gateway-->>-Image Provider: Returns Images
-        Image Provider-->>-Main Page: Updates Image List
+        Image Gateway-->>-Image provider: Returns Images
+        Image provider-->>-Main Page: Updates Image List
         Main Page-->>-User: Renders Image list
     end
     User->>+Main Page: Clicks Upload
     Main Page-->>-User: Shows Controls
     User->>+Main Page: Selects Image
-    Main Page->>+Image Provider: Triggers Upload
-    Image Provider->>+Image Provider: Gets image metadata
-    Image Provider->>+Image Provider: Validates File Metadata
-    Image Provider->>+Models: Generates upload model
-    Models-->>-Image Provider: Upload Model
-    Image Provider->>+Image Provider: Updates Upload Map
-    par Image Provider to Main Page
-        Image Provider-->>-Main Page: Updates in progress uploads
+    Main Page->>+Image provider: Triggers Upload
+    Image provider->>+Image provider: Gets image metadata
+    Image provider->>+Image provider: Validates File Metadata
+    Image provider->>+Models: Generates upload model
+    Models-->>-Image provider: Upload Model
+    Image provider->>+Image provider: Updates Upload Map
+    par Image provider to Main Page
+        Image provider-->>-Main Page: Updates in progress uploads
         Main Page-->>-User: Shows In progress upload
-    and Image Provider to Image Gateway
-        Image Provider->>+Image Gateway: Get Singed Url
+    and Image provider to Image Gateway
+        Image provider->>+Image Gateway: Get Singed Url
         Image Gateway->>+Models: Generates response model
         Models-->>-Image Gateway: Response model
-        Image Gateway-->>-Image Provider: Signed URL
-        Image Provider->>+Image Gateway: Starts Upload
+        Image Gateway-->>-Image provider: Signed URL
+        Image provider->>+Image Gateway: Starts Upload
         loop on progress
-            Image Gateway->>+Image Provider: Update Progress
-            Image Provider-->>+Main Page: Updates in progress uploads
+            Image Gateway->>+Image provider: Update Progress
+            Image provider-->>+Main Page: Updates in progress uploads
             Main Page-->>-User: Updates upload progress
         end
-        Image Gateway-->-Image Provider: Finish Upload
-        par Image Provider to Image Provider
-            Image Provider->>+Image Provider: Updates Upload Map
-            Image Provider->>+Main Page: Shows Notification
-            Image Provider-->>+Main Page: Updates in progress uploads
+        Image Gateway-->-Image provider: Finish Upload
+        par Image provider to Image provider
+            Image provider->>+Image provider: Updates Upload Map
+            Image provider->>+Main Page: Shows Notification
+            Image provider-->>+Main Page: Updates in progress uploads
             Main Page-->>-User: Removes in progress upload
-        and Image Provider to Image Gateway
-            Image Provider->>+Image Gateway: Refresh List
+        and Image provider to Image Gateway
+            Image provider->>+Image Gateway: Refresh List
             Image Gateway->>+Models: Generate image models
             Models-->>-Image Gateway: Image Models list
-            Image Gateway-->>-Image Provider: Return Images
-            Image Provider-->>+Main Page: Updates Image List
+            Image Gateway-->>-Image provider: Return Images
+            Image provider-->>+Main Page: Updates Image List
             Main Page-->>-User: Renders Image list
         end
     end
@@ -354,7 +385,7 @@ sequenceDiagram
 - What happens if the name of the image is too long? The name should be part of the metadata but not the actual upload name, that way we can be sure the S3 restrictions are not broken.
 - What if the asset is to big? Frontend should read the size of the file and validate if its something that can be uploaded, the backend should also specify the max size upload when signing the url, in case the asset is too big the upload will throw an error that should be displayed by the frontend.
 
-## Unit and End to End tests
+## Unit and End to End Tests
 
 ## Tooling
 
@@ -364,7 +395,7 @@ As mentioned in the [official React docs](https://reactjs.org/docs/testing.html)
 
 I believe tools like Enzyme or Jasmine where good at some point as workarounds when it comes to DOM manipulation and such, I think the simplest way today is to go with Jest plus React Testing Tools.
 
-### End to End tests
+### End to End Tests
 
 For End to end Tests the most solid framework out there has to be Cypress, it natively supports Typescript so it goes along with the Frontend structure, as well as supporting multiple browser types like Chrome, Electron, Firefox, webKit, among others.
 Has support for CI/CD processes where you can use the cloud version to get more insights around your tests.

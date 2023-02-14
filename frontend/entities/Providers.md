@@ -1,50 +1,50 @@
 # Providers
 
-The providers are the main state management tool that is going to be used across the application, in this case, these are in charge of spreading the data across the child components based on a custom hook.
+The providers are the main state management tool that is going to be used across the application, in this case these are in charge of spreading the data across the child components based on a custom hook.
 
 ## How to
 
 ```jsx
-// providers/User/User.provider.tsx
+// providers/Image/Image.provider.tsx
 type TContext {
-  user?: User;
+  image?: Image;
   isLoading: boolean;
 }
 
 export const Context = createContext<IContext>({
-  user: undefined;
+  image: undefined;
   isLoading: false;
 });
 
 type TProps {
   children: React.ReactNode;
-  userId: string;
+  imageId: string;
 }
 
 export const useEnvironment = () => useContext(Context);
 
-const UserProvider = ({children, userId}: TProps) => {
-  const {data: user = {}, isLoading} = useQuery(['user', userId], () => UserGateway.getById(userId));
+const ImageProvider = ({children, imageId}: TProps) => {
+  const {data: image = {}, isLoading} = useQuery(['image', imageId], () => ImageGateway.getById(imageId));
 
   const value = useMemo<IContext>(
     () => ({
-      user,
+      image,
       isLoading,
     }),
-    [user, isLoading]
+    [image, isLoading]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
-export default UserProvider;
+export default ImageProvider;
 ```
 
 ### Folder Structure
 
 ```
 providers/
-  User/
-    User.provider.tsx
+  Image/
+    Image.provider.tsx
     index.ts
 ```
